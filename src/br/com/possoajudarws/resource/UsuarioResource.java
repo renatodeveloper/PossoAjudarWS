@@ -42,13 +42,13 @@ public class UsuarioResource {
 	}
 	
 	/**
-	 *  Metodo responsavel por fazer chamada ao controler
-	 * @return ArrayList cliente
+	 *  Metodo Responsável por fazer chamada ao controler
+	 * @return ArrayList Usuario
 	 */
 	@GET
 	@Path("/todos")
 	@Produces("application/json")
-	public ArrayList<Usuario> listarProdutos(){
+	public ArrayList<Usuario> listarUsuarios(){
 		return UsuarioControler.listarTodos();
 	}
 	
