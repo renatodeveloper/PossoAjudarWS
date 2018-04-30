@@ -1,5 +1,7 @@
 package br.com.possoajudarws.resource;
 
+import java.util.ArrayList;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -9,13 +11,80 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
+import org.json.JSONObject;
+
 import br.com.possoajudarws.controler.UsuarioControler;
+import br.com.possoajudarws.model.Usuario;
 
 /**
  * Classe responsavel por conter os metodos rest de acesso ao webservice
  */
 @Path("/usuario")
 public class UsuarioResource {
+	
+	/**
+	 *  Metodo que verifica se o servidor está no ar
+	 * @return String JSON
+	 */
+	@GET
+	@Path("/conection")
+	@Produces("application/json")
+	//@Produces("aplication/xml")
+	public String testResourceConnection(){
+		JSONObject object = new JSONObject();
+		try{
+			object.put("status", 1000);
+			object.put("mensage", "The connection was a success");
+		}catch(Exception e){
+			e.getMessage().toString();
+		}	
+		return object.toString();
+	}
+	
+	/**
+	 *  Metodo responsavel por fazer chamada ao controler
+	 * @return ArrayList cliente
+	 */
+	@GET
+	@Path("/todos")
+	@Produces("application/json")
+	public ArrayList<Usuario> listarProdutos(){
+		return UsuarioControler.listarTodos();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 *  Metodo responsavel por fazer chamada ao controler
 	 * @return 

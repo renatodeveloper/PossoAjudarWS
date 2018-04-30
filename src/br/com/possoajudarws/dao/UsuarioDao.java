@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 import org.json.JSONObject;
 
 import br.com.possoajudarws.factory.ConnectionFactory;
+import br.com.possoajudarws.model.Usuario;
 
 import com.sun.jersey.json.impl.provider.entity.JSONObjectProvider;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 
 public class UsuarioDao extends ConnectionFactory {
@@ -26,6 +28,46 @@ public class UsuarioDao extends ConnectionFactory {
 		}
 		return instance;
 	}
+	
+	
+	
+	/**
+	 * Metodo responsavel por listar todos os usuarios
+	 * @return usuarios
+	 */
+	public ArrayList<Usuario> listarTodos(){
+		Connection conn = null;
+		conn = criarConexao();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Usuario> usuarios = null;
+		
+		usuarios = new ArrayList<Usuario>();
+		try{
+			pstmt = conn.prepareStatement("SELECT * FROM USUARIO");
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				Usuario usuarioX = new Usuario();
+				usuarioX.setIdUsuario(rs.getInt("idUsuario"));
+				usuarioX.setDsNome(rs.getString("dsNome"));
+				usuarioX.setDsLogin(rs.getString("dsLogin"));
+				usuarios.add(usuarioX);
+				System.out.print("\n Nome:" + usuarioX.getDsNome().toString() + "\n");
+			}
+			
+		}catch(Exception e){
+			System.out.print("Erro ao listar os usuario" );
+			e.printStackTrace();
+		}finally{
+			fecharConnexao(conn, pstmt, rs);
+		}
+		
+		return usuarios;
+	}
+	
+	
+	
+	
 	
 	/*
 	 * Metodo responsavel por validar o usuario
@@ -60,7 +102,7 @@ public class UsuarioDao extends ConnectionFactory {
 				return status.put("result", "OK").toString();
 			}
 		}catch(Exception e){
-			System.out.print("Erro ao listar os usuário" );
+			System.out.print("Erro ao listar os usuï¿½rio" );
 			e.printStackTrace();
 		}finally{
 			fecharConnexao(conn, pstmt, rs);
