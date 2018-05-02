@@ -1,12 +1,14 @@
 package br.com.possoajudarws.dao;
 
 
+import java.awt.List;
 import java.sql.ResultSet;
 
 import org.json.JSONObject;
 
 import br.com.possoajudarws.factory.ConnectionFactory;
 import br.com.possoajudarws.model.Usuario;
+import br.com.possoajudarws.model.UsuarioList;
 
 import com.sun.jersey.json.impl.provider.entity.JSONObjectProvider;
 
@@ -32,29 +34,34 @@ public class UsuarioDao extends ConnectionFactory {
 	
 	
 	/**
-	 * Metodo responsavel por listar todos os usuarios
+	 * Metodo responsavel por listar todos os usuários
 	 * @return usuarios
 	 */
-	public ArrayList<Usuario> listarTodos(){
+	public UsuarioList listarTodos(){
 		Connection conn = null;
 		conn = criarConexao();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		ArrayList<Usuario> usuarios = null;
 		
-		usuarios = new ArrayList<Usuario>();
+		UsuarioList result = new UsuarioList();
+		
+		//UsuarioList list = new Usuario().new UsuarioList();
+		//list.usuarios = new ArrayList<Usuario>();
+	
+		
+		//List<MyType> myList = new ArrayList<MyType>();
 		try{
 			pstmt = conn.prepareStatement("SELECT * FROM USUARIO");
 			rs = pstmt.executeQuery();
 			while(rs.next()){
-				Usuario usuarioX = new Usuario();
-				usuarioX.setIdUsuario(rs.getInt("idUsuario"));
-				usuarioX.setDsNome(rs.getString("dsNome"));
-				usuarioX.setDsLogin(rs.getString("dsLogin"));
-				usuarios.add(usuarioX);
-				System.out.print("\n Nome:" + usuarioX.getDsNome().toString() + "\n");
+				Usuario user = new Usuario();
+				user.setIdUsuario(rs.getInt("idUsuario"));
+				user.setDsNome(rs.getString("dsNome"));
+				user.setDsLogin(rs.getString("dsLogin"));
+				
+				result.usuarios.add(user);
+				System.out.print("\n Nome:" + user.getDsNome().toString() + "\n");
 			}
-			
 		}catch(Exception e){
 			System.out.print("Erro ao listar os usuario" );
 			e.printStackTrace();
@@ -62,7 +69,7 @@ public class UsuarioDao extends ConnectionFactory {
 			fecharConnexao(conn, pstmt, rs);
 		}
 		
-		return usuarios;
+		return result;
 	}
 	
 	
@@ -109,4 +116,46 @@ public class UsuarioDao extends ConnectionFactory {
 		}
 		return status.toString();
 	}
+	
+	public Usuario inserirUsuario(String str1, String str2){
+		Connection conn = null;
+		conn = criarConexao();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Usuario usuario = null;
+		try{
+			usuario = new Usuario();
+			pstmt = conn.prepareStatement("INSERT INTO USUARIO(dsLogin, dsSenha)VALUES (?, ?)");
+			pstmt.setString (1, str1);
+			pstmt.setString (2, str2);
+			boolean  ok = pstmt.execute();
+			if(ok){
+				pstmt = conn.prepareStatement("SELECT * FROM USUARIO WHERE dsLogin = '" + str1 + "' AND dsSenha = '" + str2 + "'");
+				rs = pstmt.executeQuery();
+				while(rs.next()){
+					int id = rs.getInt("id");
+			
+					String dsLogin = rs.getString("dsLogin");
+					String dsSenha = rs.getString("dsSenha");
+					int idUsuario  = rs.getInt("idUsuario");
+					
+					usuario.setDsLogin(dsLogin);
+					usuario.setDsSenha(dsSenha);
+					usuario.setIdUsuario(idUsuario);
+					
+					return usuario;
+				}
+			}else{
+				usuario = null;
+			}
+		    conn.close();
+		}catch(Exception e){
+			System.out.print("Erro ao listar os usu�rio" );
+			e.printStackTrace();
+		}finally{
+			fecharConnexao(conn, pstmt, rs);
+		}
+		return usuario;
+	}
+	
 }
