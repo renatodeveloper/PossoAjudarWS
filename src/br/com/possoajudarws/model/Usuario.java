@@ -1,7 +1,11 @@
 package br.com.possoajudarws.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.gson.annotations.SerializedName;
 import com.mysql.jdbc.Blob;
 
 /**
@@ -11,7 +15,7 @@ import com.mysql.jdbc.Blob;
  */
 
 /*
- * AnotaÁ„o obrigatoria, do contrario n„o funcionao web service
+ * Anota√ß√£o obrigatoria, do contrario n√£o funcionao web service
  */
 @XmlRootElement
 public final class Usuario {
@@ -24,6 +28,7 @@ public final class Usuario {
     private Blob     bytePhoto;
     private Integer  idRedeSocial;
     private Integer  idServico;
+   
     
     /*
      * ctrl + 3 + ggas
