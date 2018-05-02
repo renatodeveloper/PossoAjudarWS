@@ -28,7 +28,7 @@ public class ConnectionFactory {
 			Class.forName(DRIVER);
 			conn = DriverManager.getConnection(URL + DBNAME,USUARIO, SENHA);
 		}catch(Exception e){
-			System.out.print("N„o foi possivel criar conex„o com o banco! " + DBNAME );
+			System.out.print("N√£o foi possivel criar conex√£o com o banco! " + DBNAME );
 			e.printStackTrace();
 		}
 		return conn;
